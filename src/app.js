@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 const config = require('./config');
 
 const app = express();
@@ -23,8 +24,20 @@ const customerRoutes = require('./routes/customer-routes');
 const orderRoutes = require('./routes/order-routes');
 
 // middlewares
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({
+    limit: '5mb'
+}));
+
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
 
 // aplica as rotas às paths
 app.use('/', indexRoutes);

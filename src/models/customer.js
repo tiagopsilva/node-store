@@ -12,12 +12,18 @@ const schema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: false
+        unique: true
     },
     password: {
         type: String,
         required: true
-    }
+    },
+    roles: [{
+        type: String,
+        require: true,
+        enum: ['user', 'admin'],
+        default: 'user'
+    }]
 });
 
 module.exports = mongoose.model('Customer', schema);
